@@ -79,10 +79,10 @@ while 1 == 1:
         print(time.strftime("%Y-%m-%d", time.localtime()) + " 未打卡，开始执行打卡")
         check_in()  # TODO: 加入对返回字段的判断
 
-    # 判断是否打卡成功
-    if check_status() > 0:
-        print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " 打卡成功")
-    else:
-        print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " 打卡失败")
+        # 判断是否打卡成功
+        if check_status() > 0:
+            print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " 打卡成功")
+        else:
+            print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " 打卡失败")
     print("1 天后再次执行")
     time.sleep(86392)
