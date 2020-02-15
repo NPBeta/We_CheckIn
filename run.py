@@ -8,6 +8,10 @@ import hashlib
 # 姓名和学号
 name = input("输入姓名：")
 number = input("输入学号：")
+phone = input("输入电话：")
+area = input("输入小区 / 社区 / 村镇 / 寝室号：")
+leave = input("是否已离开重庆（“是”或“否”）：")
+infected = input("所在地是否有感染 / 疑似病例（“无”或“有”）：")
 
 # 微信小程序的固定 HTTP 请求头
 headers = {
@@ -45,7 +49,7 @@ def check_status():
 # 官方每日打卡接口
 def check_in():
     # 请求高精度 GPS 坐标和区县级地址
-    # TODO: 简化此部分代码
+    # TODO: 简化此部分代码（好像没什么可以简化的
     print("正在请求 GPS 坐标和区县级地址...")
     loc = requests.get(loc_api_url, params=loc_api_para)
     lat = loc.json()['result']['location']['lat']
@@ -57,10 +61,12 @@ def check_in():
     print("成功，经纬度：" + str(lat) + "°N, " + str(lng) + "°E, 所在地：" + address)
 
     # 创建打卡数据
-    key = {'latitude': lat, 'longitude': lng, 'name': name, 'xh': number, 'szdq': address, 'sfhxdgr': '否',
-           'stsfjk': '健康',
-           'sffr': '否', 'sfks': '否', 'sfxm': '否', 'qtycqk': '无', 'beizhu': '无', 'timestamp': int(time.time()),
-           'sign': sign()}
+    key = {'jbsks': '否', 'jbsfl': '否', 'jbsbs': '否', 'jbslt': '否', 'jbsyt': '否', 'jbsfx': '否', 'name': name,
+           'xh': number, 'xb': '', 'latitude': lat, 'longitude': lng, 'lxdh': phone,
+           'szdq': address, 'xxdz': area, 'hjsfly': leave, 'sfyfy': '否', 'xjzdywqzbl': infected, 'twsfzc': '否',
+           'ywytdzz': '无', 'brsfqz': '无', 'brsfys': '无', 'ywjchblj': '无', 'fyjtgj': '无', 'fyddsj': '无',
+           'sfbgsq': '无', 'sfjjgl': '无', 'jjglqssj': '无', 'wjjglmqqx': '无', 'qtycqk': '无', 'beizhu': '填写其他需要说明的情况',
+           'ywjcqzbl': '无', 'timestamp': int(time.time()), 'sign': sign()}
     key_base64 = base64.b64encode(json.dumps(key).encode('utf-8'))
     post_data = {'key': key_base64.decode('utf-8')}
 
@@ -77,12 +83,15 @@ while 1 == 1:
         print(time.strftime("%Y-%m-%d", time.localtime()) + " 已打卡，不再重复打卡")
     else:
         print(time.strftime("%Y-%m-%d", time.localtime()) + " 未打卡，开始执行打卡")
-        check_in()  # TODO: 加入对返回字段的判断
-
-        # 判断是否打卡成功
-        if check_status() > 0:
-            print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " 打卡成功")
+        # 判断是否打卡成功（返回 JSON 判断）
+        # TODO：下面两个失败重试和简化
+        if check_in()['message'] == 'OK':
+            # 判断是否打卡成功（当天打卡次数判断）
+            if check_status() > 0:
+                print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " 打卡成功")
+            else:
+                print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " 打卡失败")
         else:
-            print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " 打卡失败")
+            print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " 打卡请求提交失败")
     print("1 天后再次执行")
     time.sleep(86392)
