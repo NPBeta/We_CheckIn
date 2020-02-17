@@ -63,7 +63,7 @@ def check_in():
     # 创建打卡数据
     key = {'jbsks': '否', 'jbsfl': '否', 'jbsbs': '否', 'jbslt': '否', 'jbsyt': '否', 'jbsfx': '否', 'name': name,
            'xh': number, 'xb': '', 'latitude': lat, 'longitude': lng, 'lxdh': phone,
-           'szdq': address, 'xxdz': area, 'hjsfly': leave, 'sfyfy': '否', 'xjzdywqzbl': infected, 'twsfzc': '否',
+           'szdq': address, 'xxdz': area, 'hjsfly': leave, 'sfyfy': '否', 'xjzdywqzbl': infected, 'twsfzc': '是',
            'ywytdzz': '无', 'brsfqz': '无', 'brsfys': '无', 'ywjchblj': '无', 'fyjtgj': '无', 'fyddsj': '无',
            'sfbgsq': '无', 'sfjjgl': '无', 'jjglqssj': '无', 'wjjglmqqx': '无', 'qtycqk': '无', 'beizhu': '填写其他需要说明的情况',
            'ywjcqzbl': '无', 'timestamp': int(time.time()), 'sign': sign()}
